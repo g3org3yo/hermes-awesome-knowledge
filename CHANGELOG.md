@@ -2,6 +2,12 @@
 
 SemVer for the plugin/engine, CalVer for data snapshots (`kb-YYYY.MM.DD` tags).
 
+## 1.1.3 — 2026-11-07
+
+- **Docs:** record the install-time scan behaviour for a repository outside the Hermes catalog
+  (`Blocked — community source + caution verdict`, `--force` after review).
+- **CI:** green on `main` (integrity + adapter tests on 3.10/3.12, single-source bootstrap smoke).
+
 ## 1.1.2 — 2026-11-07
 
 - **Fix:** the adapter test used `__import__("os")` to swap `AWESOME_KB_HOME`, which Hermes's install

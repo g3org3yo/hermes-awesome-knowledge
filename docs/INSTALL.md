@@ -59,6 +59,15 @@ hermes plugins install g3org3yo/hermes-awesome-knowledge --enable
 hermes plugins enable awesome_knowledge
 ```
 
+A repository outside the Hermes catalog is scanned on install and, because the plugin shells out to
+`git` (clone, fetch) and documents `git clone`, the scan reports MEDIUM findings and stops with
+`Decision: BLOCKED — community source + caution verdict`. That is the intended gate for unreviewed
+sources, not a defect: review the findings, then install with `--force`:
+
+```bash
+hermes plugins install g3org3yo/hermes-awesome-knowledge --enable --force
+```
+
 Verify before enabling, without touching the live install:
 
 ```bash
@@ -117,6 +126,7 @@ rest still updated). Details land in `update_status.json`.
 | `git is required on PATH` | no git in the environment | install git, or use `--skip-provision` on a machine that already has the clones |
 | `diverged-skipped` for a repo | that clone has local commits | inspect it manually; nothing was modified |
 | `hermes plugins validate` reports `security scan — curl_pipe_shell (README.md…)` and similar | the clones were placed **inside** the plugin directory, so the scanner reads third-party markdown | move them out: `python scripts/bootstrap.py --raw-root "$HOME/.cache/hermes-awesome-knowledge/raw"`, then `hermes plugins validate .` again |
+| install stops with `Decision: BLOCKED — community source + caution verdict` | unreviewed source + MEDIUM findings (the plugin runs `git`) | review the findings, then add `--force` |
 | `hermes plugins install` succeeded but no tools appear | plugin installed disabled | `hermes plugins enable awesome_knowledge`, then start a new session |
 | search returns nothing for a repo | that repo is not in `config.json` | `python scripts/bootstrap.py --only <id>`, then `python bin/awesome.py rebuild` |
 | `badly formed help string` | an old bootstrap copy | use the version from this repository |

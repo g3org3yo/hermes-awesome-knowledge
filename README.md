@@ -63,6 +63,9 @@ Then enable the plugin:
 hermes plugins install g3org3yo/hermes-awesome-knowledge --enable
 ```
 
+The repository is not in the Hermes catalog, so the install-time scan reaches a caution verdict
+(the plugin shells out to `git`) and asks for `--force` after you review it.
+
 For a local checkout, copy or symlink the directory into your Hermes plugins folder and run
 `hermes plugins enable awesome_knowledge`. Nothing else needs configuring: the plugin resolves
 its knowledge base to its own directory and honours `AWESOME_KB_HOME` when you keep the base
