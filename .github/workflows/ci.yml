@@ -57,6 +57,9 @@ jobs:
       - name: Status reports the index
         run: python bin/awesome.py status
 
-      - name: Health check without a source clone fails cleanly
+      - name: Unknown repository id is reported, not silently ignored
         run: |
-          python bin/awesome.py search "pdf" --repo does-not-exist && exit 1 || true
+          set -euo pipefail
+          out=$(python bin/awesome.py search "pdf" --repo does-not-exist 2>&1 || true)
+          echo "$out"
+          grep -q "unknown repository id" <<< "$out"
