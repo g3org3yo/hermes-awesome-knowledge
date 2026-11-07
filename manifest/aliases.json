@@ -1,0 +1,45 @@
+{
+  "version": 1,
+  "description": "Deterministic query normalisation for the Awesome KB. 'tokens' are ADDED to the query, 'drop' removes accidental tokens, 'boost' adds a repository router prior. No LLM, no network, no index writes. Keep this file small and domain-specific: it is a correction layer for vocabulary the upstream lists do not share, not a search engine.",
+  "generic_tokens": [],
+  "aliases": {
+    "pdf manipulation": {
+      "tokens": ["pdf"],
+      "drop": ["manipulation", "manipulate", "manipulating", "edit"],
+      "boost": {"awesome-python": 1.8, "awesome-java": 0.4},
+      "note": "'manipulation' matches the Java section name 'Bytecode Manipulation' and is not a topic word for PDF work."
+    },
+    "password manager": {
+      "tokens": [],
+      "drop": [],
+      "boost": {"awesome-selfhosted": 1.5},
+      "note": "Self-hosting lists carry the topic; the phrase already tokenises well."
+    },
+    "self hosted password manager": {
+      "tokens": ["password", "manager"],
+      "drop": [],
+      "boost": {"awesome-selfhosted": 1.5}
+    },
+    "recon": {
+      "tokens": ["reconnaissance"],
+      "drop": [],
+      "boost": {"awesome-hacking": 1.5, "book-of-secret-knowledge": 1.0}
+    },
+    "cybersecurity reconnaissance": {
+      "tokens": ["recon"],
+      "drop": [],
+      "boost": {"awesome-hacking": 1.5, "book-of-secret-knowledge": 0.5},
+      "note": "'cybersecurity' is the token that routes to the hacking lists — never drop it; 'recon' is added because the lists phrase it as 'recon'/'reconnaissance'."
+    },
+    "gang of four": {
+      "tokens": ["design", "patterns"],
+      "drop": ["gang", "four"],
+      "boost": {"awesome-design-patterns": 2.0}
+    },
+    "gof": {
+      "tokens": ["design", "patterns"],
+      "drop": ["gof"],
+      "boost": {"awesome-design-patterns": 1.5}
+    }
+  }
+}

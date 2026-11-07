@@ -1,0 +1,31 @@
+# upstream data — provisioned by scripts/bootstrap.py, never committed
+data/
+manifest/sync.json
+
+# generated index and reports
+index.db
+index.db-journal
+index.db-wal
+index.db-shm
+registry.json
+topics.json
+INDEX.md
+LAST_UPDATE.md
+update_status.json
+maintenance.log
+logs/
+cache/
+enrichment/
+config.json
+
+# python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# os / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

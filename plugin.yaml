@@ -1,0 +1,20 @@
+name: awesome_knowledge
+version: 1.0.0
+manifest_version: 1
+kind: standalone
+author: g3org3yo
+license: MIT
+description: >-
+  Self-contained Awesome Knowledge Base: 14 curated GitHub awesome-lists cloned as upstream
+  data, parsed deterministically into SQLite/FTS5, and exposed as three routing tools. Ships
+  its own bootstrap, incremental updater, tests and license notices; no LLM is required to
+  build, update or query it.
+requires_env: []
+provides_tools:
+  - awesome_search
+  - awesome_section
+  - awesome_status
+platforms:
+  - windows
+  - linux
+  - macos

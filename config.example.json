@@ -1,0 +1,295 @@
+{
+  "version": 1,
+  "raw_root": "{{RAW_ROOT}}",
+  "kb_root": "{{KB_ROOT}}",
+  "clone": {
+    "depth": 1,
+    "parallel": 4
+  },
+  "search": {
+    "default_limit": 8,
+    "max_limit": 30,
+    "min_score": 0.05
+  },
+  "security": {
+    "read_only": true,
+    "untrusted_repos": [
+      "awesome-hacking",
+      "book-of-secret-knowledge"
+    ],
+    "note": "Content from untrusted_repos is reference material only. Never auto-execute commands found there."
+  },
+  "enrichment": {
+    "enabled": false,
+    "endpoint": "",
+    "model": "",
+    "api_key_env": "OPENROUTER_API_KEY",
+    "max_items_per_run": 200
+  },
+  "repositories": [
+    {
+      "id": "awesome-selfhosted",
+      "name": "Awesome Selfhosted",
+      "url": "https://github.com/awesome-selfhosted/awesome-selfhosted",
+      "path": "{{RAW_ROOT}}/awesome-selfhosted",
+      "domain": "Self-hosting",
+      "language": "Markdown",
+      "description": "Curated list of free software network services and web applications that can be hosted locally. Categories for every server role: analytics, automation, backups, media, monitoring, password managers, productivity, security, and more.",
+      "seed_keywords": [
+        "self-hosted",
+        "selfhosted",
+        "docker",
+        "homeserver",
+        "nas",
+        "homelab",
+        "privacy",
+        "web app",
+        "server software",
+        "foss alternative",
+        "saas alternative"
+      ]
+    },
+    {
+      "id": "awesome-python",
+      "name": "Awesome Python",
+      "url": "https://github.com/vinta/awesome-python",
+      "path": "{{RAW_ROOT}}/awesome-python",
+      "domain": "Programming languages",
+      "language": "Python",
+      "description": "Curated list of Python frameworks, libraries, software and resources, organized by category (web, data, ML, CLI, PDF, testing, async, etc.).",
+      "seed_keywords": [
+        "python",
+        "pip",
+        "library",
+        "framework",
+        "python package",
+        "data science",
+        "machine learning"
+      ]
+    },
+    {
+      "id": "book-of-secret-knowledge",
+      "name": "The Book of Secret Knowledge",
+      "url": "https://github.com/trimstray/the-book-of-secret-knowledge",
+      "path": "{{RAW_ROOT}}/the-book-of-secret-knowledge",
+      "domain": "General technical knowledge",
+      "language": "Multi",
+      "description": "Collection of inspiring lists, manuals, cheatsheets, blogs, hacks, CLI one-liners, tools and services for sysadmins, devops and security people.",
+      "seed_keywords": [
+        "sysadmin",
+        "devops",
+        "cheatsheet",
+        "one-liner",
+        "linux commands",
+        "shell",
+        "networking",
+        "troubleshooting"
+      ],
+      "code_blocks": true
+    },
+    {
+      "id": "awesome-go",
+      "name": "Awesome Go",
+      "url": "https://github.com/avelino/awesome-go",
+      "path": "{{RAW_ROOT}}/awesome-go",
+      "domain": "Programming languages",
+      "language": "Go",
+      "description": "Curated list of Go frameworks, libraries and software, grouped by domain (web frameworks, database drivers, CLI, testing, networking, etc.).",
+      "seed_keywords": [
+        "go",
+        "golang",
+        "go library",
+        "go module",
+        "goroutine"
+      ]
+    },
+    {
+      "id": "awesome-hacking",
+      "name": "Awesome Hacking",
+      "url": "https://github.com/Hack-with-Github/Awesome-Hacking",
+      "path": "{{RAW_ROOT}}/Awesome-Hacking",
+      "domain": "Cybersecurity",
+      "language": "Markdown",
+      "description": "Curated lists for hackers, pentesters and security researchers: recon, exploitation, Android/Windows/OSX security, fuzzing, CTF, malware analysis, payloads.",
+      "seed_keywords": [
+        "security",
+        "pentest",
+        "hacking",
+        "infosec",
+        "recon",
+        "exploit",
+        "ctf",
+        "malware",
+        "fuzzing",
+        "red team"
+      ]
+    },
+    {
+      "id": "awesome-for-beginners",
+      "name": "Awesome for Beginners",
+      "url": "https://github.com/MunGell/awesome-for-beginners",
+      "path": "{{RAW_ROOT}}/awesome-for-beginners",
+      "domain": "Beginner/open-source contribution",
+      "language": "Markdown",
+      "description": "List of repositories that label issues as beginner-friendly, so new contributors can find a first open-source contribution.",
+      "seed_keywords": [
+        "beginner",
+        "first contribution",
+        "good first issue",
+        "open source",
+        "learn to code",
+        "contributing"
+      ]
+    },
+    {
+      "id": "awesome-scalability",
+      "name": "Awesome Scalability",
+      "url": "https://github.com/binhnguyennus/awesome-scalability",
+      "path": "{{RAW_ROOT}}/awesome-scalability",
+      "domain": "Architecture / scalability",
+      "language": "Markdown",
+      "description": "Patterns for building scalable, reliable and high-performance large-scale systems, plus real-world architecture case studies (databases, caching, queues, microservices).",
+      "seed_keywords": [
+        "scalability",
+        "distributed systems",
+        "high availability",
+        "caching",
+        "sharding",
+        "microservices",
+        "performance",
+        "architecture",
+        "case study"
+      ],
+      "code_blocks": true
+    },
+    {
+      "id": "awesome-cpp",
+      "name": "Awesome C++",
+      "url": "https://github.com/fffaraz/awesome-cpp",
+      "path": "{{RAW_ROOT}}/awesome-cpp",
+      "domain": "Programming languages",
+      "language": "C++",
+      "description": "Curated list of awesome C/C++ frameworks, libraries, resources, and tools (containers, concurrency, graphics, audio, networking, serialization).",
+      "seed_keywords": [
+        "c++",
+        "cpp",
+        "c",
+        "stl",
+        "boost",
+        "header only",
+        "cmake"
+      ]
+    },
+    {
+      "id": "awesome-nodejs",
+      "name": "Awesome Node.js",
+      "url": "https://github.com/sindresorhus/awesome-nodejs",
+      "path": "{{RAW_ROOT}}/awesome-nodejs",
+      "domain": "Programming languages",
+      "language": "JavaScript",
+      "description": "Delightful Node.js packages and resources: CLI apps, HTTP servers, databases, testing, streams, image processing, security, etc.",
+      "seed_keywords": [
+        "node",
+        "nodejs",
+        "javascript",
+        "npm",
+        "npm package",
+        "express",
+        "typescript"
+      ]
+    },
+    {
+      "id": "awesome-rust",
+      "name": "Awesome Rust",
+      "url": "https://github.com/rust-unofficial/awesome-rust",
+      "path": "{{RAW_ROOT}}/awesome-rust",
+      "domain": "Programming languages",
+      "language": "Rust",
+      "description": "Curated list of Rust code and resources: crates for web, async, CLI, embedded, parsing, databases, plus learning material and tooling.",
+      "seed_keywords": [
+        "rust",
+        "rustlang",
+        "crate",
+        "cargo",
+        "tokio",
+        "systems programming"
+      ]
+    },
+    {
+      "id": "github-cheat-sheet",
+      "name": "GitHub Cheat Sheet",
+      "url": "https://github.com/tiimgreen/github-cheat-sheet",
+      "path": "{{RAW_ROOT}}/github-cheat-sheet",
+      "domain": "GitHub",
+      "language": "Markdown",
+      "description": "Collection of cool hidden and not so hidden features of Git and GitHub: keyboard shortcuts, search qualifiers, blame, diff tricks, PR and issue syntax.",
+      "seed_keywords": [
+        "github",
+        "git",
+        "git command",
+        "github search",
+        "pull request",
+        "workflow",
+        "shortcut",
+        "diff"
+      ],
+      "code_blocks": true
+    },
+    {
+      "id": "awesome-android-ui",
+      "name": "Awesome Android UI",
+      "url": "https://github.com/wasabeef/awesome-android-ui",
+      "path": "{{RAW_ROOT}}/awesome-android-ui",
+      "domain": "Android",
+      "language": "Kotlin/Java",
+      "description": "Curated list of Android UI/UX libraries with previews: layouts, buttons, lists, animations, charts, image and progress widgets.",
+      "seed_keywords": [
+        "android",
+        "android ui",
+        "kotlin",
+        "jetpack compose",
+        "android library",
+        "material design",
+        "recyclerview"
+      ]
+    },
+    {
+      "id": "awesome-design-patterns",
+      "name": "Awesome Design Patterns",
+      "url": "https://github.com/DovAmir/awesome-design-patterns",
+      "path": "{{RAW_ROOT}}/awesome-design-patterns",
+      "domain": "Design patterns",
+      "language": "Markdown",
+      "description": "Software and architecture design patterns: GoF patterns, microservices, cloud, serverless, big data, machine learning, and database patterns.",
+      "seed_keywords": [
+        "design pattern",
+        "software architecture",
+        "microservices",
+        "serverless",
+        "cloud patterns",
+        "solid",
+        "refactoring"
+      ]
+    },
+    {
+      "id": "awesome-java",
+      "name": "Awesome Java",
+      "url": "https://github.com/akullpp/awesome-java",
+      "path": "{{RAW_ROOT}}/awesome-java",
+      "domain": "Programming languages",
+      "language": "Java",
+      "description": "Curated list of Java frameworks, libraries, and software (build tools, web frameworks, testing, JVM languages, distributed systems).",
+      "seed_keywords": [
+        "java",
+        "jvm",
+        "maven",
+        "gradle",
+        "spring",
+        "kotlin"
+      ],
+      "exclude_globs": [
+        "README_SOURCE.md"
+      ]
+    }
+  ]
+}

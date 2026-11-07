@@ -1,0 +1,130 @@
+{
+  "repositories": [
+    {
+      "id": "awesome-selfhosted",
+      "name": "Awesome Selfhosted",
+      "url": "https://github.com/awesome-selfhosted/awesome-selfhosted",
+      "dir": "awesome-selfhosted",
+      "license_file": "LICENSE",
+      "license": "CC (see LICENSE)",
+      "first_line": "License: CC-BY-SA-3.0"
+    },
+    {
+      "id": "awesome-python",
+      "name": "Awesome Python",
+      "url": "https://github.com/vinta/awesome-python",
+      "dir": "awesome-python",
+      "license_file": "LICENSE",
+      "license": "CC (see LICENSE)",
+      "first_line": "Creative Commons Attribution 4.0 International License (CC BY 4.0)"
+    },
+    {
+      "id": "book-of-secret-knowledge",
+      "name": "The Book of Secret Knowledge",
+      "url": "https://github.com/trimstray/the-book-of-secret-knowledge",
+      "dir": "the-book-of-secret-knowledge",
+      "license_file": "LICENSE.md",
+      "license": "MIT",
+      "first_line": "MIT License"
+    },
+    {
+      "id": "awesome-go",
+      "name": "Awesome Go",
+      "url": "https://github.com/avelino/awesome-go",
+      "dir": "awesome-go",
+      "license_file": "LICENSE",
+      "license": "MIT",
+      "first_line": "The MIT License (MIT)"
+    },
+    {
+      "id": "awesome-hacking",
+      "name": "Awesome Hacking",
+      "url": "https://github.com/Hack-with-Github/Awesome-Hacking",
+      "dir": "Awesome-Hacking",
+      "license_file": "LICENSE",
+      "license": "CC (see LICENSE)",
+      "first_line": "CC0 1.0 Universal"
+    },
+    {
+      "id": "awesome-for-beginners",
+      "name": "Awesome for Beginners",
+      "url": "https://github.com/MunGell/awesome-for-beginners",
+      "dir": "awesome-for-beginners",
+      "license_file": null,
+      "license": "see upstream",
+      "first_line": ""
+    },
+    {
+      "id": "awesome-scalability",
+      "name": "Awesome Scalability",
+      "url": "https://github.com/binhnguyennus/awesome-scalability",
+      "dir": "awesome-scalability",
+      "license_file": "LICENSE",
+      "license": "MIT",
+      "first_line": "MIT License"
+    },
+    {
+      "id": "awesome-cpp",
+      "name": "Awesome C++",
+      "url": "https://github.com/fffaraz/awesome-cpp",
+      "dir": "awesome-cpp",
+      "license_file": "LICENSE",
+      "license": "MIT",
+      "first_line": "MIT License"
+    },
+    {
+      "id": "awesome-nodejs",
+      "name": "Awesome Node.js",
+      "url": "https://github.com/sindresorhus/awesome-nodejs",
+      "dir": "awesome-nodejs",
+      "license_file": "license",
+      "license": "CC (see LICENSE)",
+      "first_line": "Creative Commons Legal Code"
+    },
+    {
+      "id": "awesome-rust",
+      "name": "Awesome Rust",
+      "url": "https://github.com/rust-unofficial/awesome-rust",
+      "dir": "awesome-rust",
+      "license_file": "LICENSE.txt",
+      "license": "CC (see LICENSE)",
+      "first_line": "Creative Commons Legal Code"
+    },
+    {
+      "id": "github-cheat-sheet",
+      "name": "GitHub Cheat Sheet",
+      "url": "https://github.com/tiimgreen/github-cheat-sheet",
+      "dir": "github-cheat-sheet",
+      "license_file": "LICENSE",
+      "license": "MIT",
+      "first_line": "Copyright (c) 2014 Tim Green"
+    },
+    {
+      "id": "awesome-android-ui",
+      "name": "Awesome Android UI",
+      "url": "https://github.com/wasabeef/awesome-android-ui",
+      "dir": "awesome-android-ui",
+      "license_file": "LICENSE",
+      "license": "MIT",
+      "first_line": "MIT License"
+    },
+    {
+      "id": "awesome-design-patterns",
+      "name": "Awesome Design Patterns",
+      "url": "https://github.com/DovAmir/awesome-design-patterns",
+      "dir": "awesome-design-patterns",
+      "license_file": null,
+      "license": "see upstream",
+      "first_line": ""
+    },
+    {
+      "id": "awesome-java",
+      "name": "Awesome Java",
+      "url": "https://github.com/akullpp/awesome-java",
+      "dir": "awesome-java",
+      "license_file": "LICENSE",
+      "license": "CC (see LICENSE)",
+      "first_line": "Attribution-ShareAlike 4.0 International"
+    }
+  ]
+}
