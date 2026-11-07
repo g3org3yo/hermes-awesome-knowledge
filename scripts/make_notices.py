@@ -14,8 +14,8 @@ lines = [
     "# Third-party notices",
     "",
     "This project does not vendor upstream content. `scripts/bootstrap.py` clones the",
-    "repositories below as data into `data/raw/` (gitignored); each clone keeps its own license",
-    "file, and the retrieval tools return that content verbatim.",
+    "repositories below as data into `$RAW_ROOT` (gitignored, platform cache directory by default);",
+    "each clone keeps its own license file, and the retrieval tools return that content verbatim.",
     "",
     "| Repository | Project | License | License file | Installed as |",
     "|---|---|---|---|---|",
@@ -26,7 +26,7 @@ for entry in lic["repositories"]:
     lines.append(
         f"| `{entry['id']}` | [{name}]({entry['url']}) | {entry['license']} "
         f"| {('`' + entry['license_file'] + '`') if entry['license_file'] else '—'} "
-        f"| `data/raw/{entry['dir']}` |"
+        f"| `$RAW_ROOT/{entry['dir']}` |"
     )
 
 lines += [

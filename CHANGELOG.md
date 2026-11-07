@@ -2,6 +2,11 @@
 
 SemVer for the plugin/engine, CalVer for data snapshots (`kb-YYYY.MM.DD` tags).
 
+## 1.1.4 — 2026-11-07
+
+- **Docs:** `THIRD_PARTY_NOTICES.md` still described `data/raw/` as the clone location. It now says
+  `$RAW_ROOT` (platform cache directory by default), matching 1.1.1.
+
 ## 1.1.3 — 2026-11-07
 
 - **Docs:** record the install-time scan behaviour for a repository outside the Hermes catalog
