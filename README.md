@@ -72,7 +72,7 @@ bin/awesome.py           the engine: parse, index, search, section, status, upda
 bin/enrich.py            optional LLM enrichment (never required)
 aliases.json             deterministic query aliases (loaded from the KB root by the engine)
 config.example.json      template; bootstrap.py renders config.json with real paths
-manifest/repositories.json   14 upstream repositories (id, dir, url, domain, seed keywords)
+manifest/repositories.json   24 upstream repositories (id, dir, url, domain, seed keywords)
 manifest/licenses.json       upstream license snapshot used to build THIRD_PARTY_NOTICES.md
 scripts/bootstrap.py     provision + configure + index + selftest
 scripts/update.py        deterministic incremental update

@@ -117,6 +117,7 @@ HEADING_RE = re.compile(r"^(#{1,6})\s+(.*?)\s*#*\s*$")
 LIST_RE = re.compile(r"^\s{0,6}(?:[-*+]|\d{1,3}[.)])\s+(.+?)\s*$")
 LINK_RE = re.compile(r"(?<!!)\[([^\]]*)\]\(([^()\s]*(?:\([^()]*\)[^()\s]*)*)\)")
 IMAGE_RE = re.compile(r"!\[[^\]]*\]\([^)]*\)")
+HTML_ANCHOR_RE = re.compile(r"<a\s[^>]*href=\"([^\"]+)\"[^>]*>(.*?)</a>", re.I | re.S)
 HTML_RE = re.compile(r"<[^>]{1,400}>")
 CODE_SPAN_RE = re.compile(r"`([^`]{1,80})`")
 ANCHOR_RE = re.compile(r"^\s*(?:<a\s+[^>]*>\s*</a>\s*)?$")
@@ -130,6 +131,7 @@ SKIP_FILE_RE = re.compile(
     re.I,
 )
 TRANSLATION_RE = re.compile(r"readme[._-][a-z]{2}(?:[-_][a-z]{2,4})?\.md$", re.I)
+META_DIRS = {".github", ".gitlab", ".circleci", ".devcontainer", ".vscode"}
 
 STOPWORDS = {
     "the", "and", "for", "with", "from", "that", "this", "you", "your", "are", "all",
@@ -224,15 +226,18 @@ def resolve_url(base_repo_url: str, base_file: str, url: str) -> str:
     return url
 
 
-def parse_markdown(path: Path, repo_url: str, rel_path: str, code_blocks: bool = False) -> tuple[list[Section], list[Entry]]:
+def parse_markdown(path: Path, repo_url: str, rel_path: str, code_blocks: bool = False,
+                   text: str | None = None) -> tuple[list[Section], list[Entry]]:
     """Deterministic parse: heading stack -> sections, list/table rows -> entries.
 
     Setext headings (``Title`` over ``====``) are supported because some lists use them.
     Fenced code blocks are only indexed as entries for repositories explicitly flagged
     ``code_blocks`` in config.json (cheat sheets) — elsewhere they are noise.
+    ``text`` lets the caller pass pre-normalised content (reStructuredText) instead of
+    re-reading the file.
     """
     try:
-        raw = path.read_text(encoding="utf-8", errors="replace")
+        raw = text if text is not None else path.read_text(encoding="utf-8", errors="replace")
     except OSError:
         return [], []
     lines = raw.splitlines()
@@ -369,6 +374,35 @@ def parse_markdown(path: Path, repo_url: str, rel_path: str, code_blocks: bool =
                 desc = desc[:600]
         entries.append(Entry(name=name[:160], url=url, description=desc, tags=tags[:8], line=i))
 
+    # HTML table rows: some curated lists render entries as
+    # ``<td><a href="...">Name</a></td><td>description</td>`` instead of markdown lists.
+    # Only anchors that stand alone on their line participate, one per line, and the
+    # description is taken from the following text line of the same table row.
+    seen_html: set[tuple[str, str]] = set()
+    for i, line in enumerate(lines):
+        anchor = HTML_ANCHOR_RE.search(line)
+        if not anchor or LIST_RE.match(line):
+            continue
+        outside = HTML_RE.sub(" ", HTML_ANCHOR_RE.sub(" ", line)).strip()
+        if outside.startswith("<") is False and outside:
+            continue                       # anchor inside prose: not a table cell
+        label = clean_inline(HTML_RE.sub(" ", anchor.group(2)))[0]
+        raw_url = anchor.group(1)
+        if not label or not raw_url.lower().startswith(("http://", "https://")):
+            continue
+        url = resolve_url(repo_url, rel_path, raw_url)
+        key = (label.casefold(), url or "")
+        if not url or key in seen_html:
+            continue
+        seen_html.add(key)
+        desc = ""
+        for nxt in lines[i + 1:i + 5]:
+            cand = HTML_RE.sub(" ", nxt).strip(" \t/")
+            if cand and not LINK_RE.search(cand):
+                desc = clean_inline(cand)[0][:600]
+                break
+        entries.append(Entry(name=label[:160], url=url, description=desc, line=i))
+
     for sec in stack:
         sec.end_line = len(lines)
     # section entry counts + containment by line window
@@ -377,18 +411,83 @@ def parse_markdown(path: Path, repo_url: str, rel_path: str, code_blocks: bool =
     return sections, entries
 
 
+INDEXABLE_SUFFIXES = (".md", ".rst")
+
+# ReStructuredText -> markdown, line-count preserving: the underline line is blanked instead
+# of removed, so section line ranges and #L anchors still point at the original file.
+RST_UNDERLINE_RE = re.compile(r"^([=\-~^\"'*+#])\1{2,}\s*$")
+RST_LINK_RE = re.compile(r"`([^`<>]+?)\s*<([^>`\s]+)>`_{1,2}")
+RST_REF_RE = re.compile(r"`([^`<>]+?)`_{1,2}")
+RST_LITERAL_RE = re.compile(r"``([^`]+)``")
+# RST substitution references used as status icons (|OK_ICON|, |MISSING_ICON|) and the
+# trailing ``[`Meta <...>`_](...)`` governance links carry no resource signal — dropping them
+# keeps the first markdown link on the line the actual resource.
+RST_SUBSTITUTION_RE = re.compile(r"(?:^|\s)\|[A-Za-z0-9_-]+\|")
+RST_TRAILING_REF_LINK_RE = re.compile(r"\s*\[`[^`]*`_\](?:\(.*\))?\s*$")
+
+
+def _clean_rst_line(line: str) -> str:
+    line = RST_TRAILING_REF_LINK_RE.sub("", line)
+    line = RST_SUBSTITUTION_RE.sub(" ", line)
+    # "[...]" is a truncation marker some lists append to long names; the markdown entry
+    # parser stops at the first nested bracket, so such rows would be silently dropped.
+    line = line.replace("[...]", "")
+    return line.rstrip()
+
+
+def rst_to_markdown(text: str) -> str:
+    """Convert the RST subset that curated lists use (setext headings, inline links, literals).
+
+    Only the constructs that carry indexable signal are translated; everything else is left
+    byte-identical so descriptions survive unchanged.
+    """
+    lines = text.splitlines()
+    out: list[str] = []
+    i = 0
+    while i < len(lines):
+        cur = lines[i]
+        nxt = lines[i + 1] if i + 1 < len(lines) else ""
+        stripped = nxt.strip()
+        if (cur.strip() and not cur[:1].isspace() and RST_UNDERLINE_RE.match(stripped)
+                and len(stripped) >= max(3, len(cur.strip()) - 2)):
+            level = 1 if stripped[0] == "=" else (2 if stripped[0] == "-" else 3)
+            out.append("#" * level + " " + cur.strip())
+            out.append("")          # keep the line count stable
+            i += 2
+            continue
+        out.append(_clean_rst_line(cur))
+        i += 1
+    text = "\n".join(out) + ("\n" if text.endswith("\n") else "")
+    text = RST_LINK_RE.sub(lambda m: f"[{m.group(1).strip()}]({m.group(2)})", text)
+    text = RST_LITERAL_RE.sub(lambda m: "`" + m.group(1) + "`", text)
+    text = RST_REF_RE.sub(lambda m: m.group(1), text)   # unresolvable named refs -> plain text
+    return text
+
+
+def read_indexable_text(path: Path) -> str:
+    try:
+        text = path.read_text(encoding="utf-8", errors="replace")
+    except OSError:
+        return ""
+    return rst_to_markdown(text) if path.suffix.lower() == ".rst" else text
+
+
 def should_index_file(path: Path, min_links: int = 8, min_entries: int = 4,
                       min_headings: int = 10) -> bool:
-    if path.suffix.lower() != ".md":
+    if path.suffix.lower() not in INDEXABLE_SUFFIXES:
         return False
     name = path.name
     if TRANSLATION_RE.match(name):
         return False
-    if SKIP_FILE_RE.search(name) or SKIP_FILE_RE.search(str(path.parent.name)):
+    if SKIP_FILE_RE.search(name):
         return False
-    try:
-        text = path.read_text(encoding="utf-8", errors="replace")
-    except OSError:
+    # community-health files are skipped by name; the *directory* is only skipped when it is
+    # a VCS/meta dir. Matching the repo folder name here used to drop whole repositories
+    # whose name happens to contain a skipped word (e.g. awesome-web-security).
+    if path.parent.name.lower() in META_DIRS:
+        return False
+    text = read_indexable_text(path)
+    if not text:
         return False
     if len(text) < 300:
         return False
@@ -396,10 +495,13 @@ def should_index_file(path: Path, min_links: int = 8, min_entries: int = 4,
     min_links = 4 if small else min_links
     min_entries = 2 if small else min_entries
     links = len(LINK_RE.findall(text))
+    # lists that render rows as HTML table cells have no markdown links at all
+    html_rows = sum(1 for ln in text.splitlines()
+                    if HTML_ANCHOR_RE.search(ln) and not LIST_RE.match(ln))
     entry_lines = sum(1 for ln in text.splitlines()
                       if ((LIST_RE.match(ln) or ("|" in ln and ln.strip().lstrip("|").strip().startswith("[")))
                           and LINK_RE.search(ln)))
-    if links >= min_links and entry_lines >= min_entries:
+    if links + html_rows >= min_links and entry_lines + html_rows >= min_entries:
         return True
     # cheat-sheet style documents (command blocks under many headings) have few list entries
     headings = len(re.findall(r"^#{1,6}\s+\S", text, re.M))
@@ -411,13 +513,14 @@ def should_index_file(path: Path, min_links: int = 8, min_entries: int = 4,
 
 
 def iter_markdown_files(repo_path: Path, exclude_globs: Iterable[str] = ()) -> list[Path]:
+    """Every indexable document in a repository: markdown plus reStructuredText."""
     skip_dirs = {".git", "node_modules", "vendor", "dist", "build", ".github", "images", "assets"}
     globs = [g.lower() for g in exclude_globs]
     out: list[Path] = []
     for root, dirs, files in os.walk(repo_path):
         dirs[:] = [d for d in dirs if d.lower() not in skip_dirs]
         for f in files:
-            if not f.lower().endswith(".md"):
+            if not f.lower().endswith(INDEXABLE_SUFFIXES):
                 continue
             p = Path(root) / f
             rel = p.relative_to(repo_path).as_posix()
@@ -524,10 +627,9 @@ def index_repo(conn: sqlite3.Connection, repo: dict, *, force: bool = False,
         keep.add(rel)
         if only_files is not None and rel not in only_files and not force:
             continue
-        try:
-            text = path.read_text(encoding="utf-8", errors="replace")
-        except OSError as exc:
-            stats["errors"].append(f"{rel}: {exc}")
+        text = read_indexable_text(path)
+        if not text:
+            stats["errors"].append(f"{rel}: unreadable")
             continue
         digest = sha_of(text)
         row = conn.execute("SELECT sha FROM files WHERE repo_id=? AND file=?", (rid, rel)).fetchone()
@@ -535,7 +637,7 @@ def index_repo(conn: sqlite3.Connection, repo: dict, *, force: bool = False,
             stats["files_skipped"] += 1
             continue
         sections, entries = parse_markdown(path, repo["url"].rstrip("/").removesuffix(".git"), rel,
-                                            code_blocks=bool(repo.get("code_blocks")))
+                                            code_blocks=bool(repo.get("code_blocks")), text=text)
         if not entries:
             stats["files_skipped"] += 1
             continue
@@ -1199,7 +1301,21 @@ def search(conn: sqlite3.Connection, cfg: dict, query: str, *, limit: int = 8,
     per_repo: dict[str, int] = {}
     seen_sections: dict[tuple[str, str], int] = {}
     seen_urls: set[str] = set()
-    for score, r, coverage, signals in sorted(scored_all, key=lambda x: -x[0]):
+    # Guarantee the router's top repositories a slot before score order fills the answer:
+    # a small, exact-match list must not be buried by large lists that share the query words.
+    by_repo_rows: dict[str, list] = {}
+    for item in sorted(scored_all, key=lambda x: -x[0]):
+        by_repo_rows.setdefault(item[1]["repo_id"], []).append(item)
+    ordered_rows: list = []
+    for rid in repo_order[:3]:
+        rows_ = by_repo_rows.get(rid) or []
+        if rows_:
+            ordered_rows.append(rows_[0])
+    taken = {id(x) for x in ordered_rows}
+    for item in sorted(scored_all, key=lambda x: -x[0]):
+        if id(item) not in taken:
+            ordered_rows.append(item)
+    for score, r, coverage, signals in ordered_rows:
         if domain_filter:
             d = conn.execute("SELECT domain FROM repos WHERE id=?", (r["repo_id"],)).fetchone()
             if not d or domain_filter.lower() not in (d["domain"] or "").lower():
@@ -1259,7 +1375,19 @@ def search(conn: sqlite3.Connection, cfg: dict, query: str, *, limit: int = 8,
                                        "repo_rank": item["repo_rank"]})
         slot["hits"] += 1
         slot["score"] += item["score"]
-    route_list = sorted(routes.values(), key=lambda x: (-x["score"], x["repo_rank"]))[:6]
+    # routes answer "which repositories own this query", so one repository may not consume
+    # several slots: keep its best two sections. Truncating the flat per-section list used to
+    # drop the strongest repository entirely when neighbours had more sections in the top rows.
+    route_sorted = sorted(routes.values(), key=lambda x: (-x["score"], x["repo_rank"]))
+    route_list: list[dict] = []
+    per_route_repo: dict[str, int] = {}
+    for r in route_sorted:
+        if per_route_repo.get(r["repo_id"], 0) >= 2:
+            continue
+        per_route_repo[r["repo_id"]] = per_route_repo.get(r["repo_id"], 0) + 1
+        route_list.append(r)
+        if len(route_list) >= 6:
+            break
     for r in route_list:
         r["score"] = round(r["score"], 3)
         r.pop("repo_rank", None)
@@ -1872,6 +2000,18 @@ SELFTEST_QUERIES = [
     ("c++ json library", "awesome-cpp"),
     ("first contribution open source", "awesome-for-beginners"),
     ("linux one-liners sysadmin", "book-of-secret-knowledge"),
+    # sources added 2026-11-07
+    ("mcp servers for postgres", "awesome-mcp-servers"),
+    ("model context protocol", "awesome-mcp-servers"),
+    ("build a database from scratch", "build-your-own-x"),
+    ("llm agent rag app examples", "awesome-llm-apps"),
+    ("malware analysis reverse engineering", "awesome-malware-analysis"),
+    ("web security ssrf jwt", "awesome-web-security"),
+    ("threat intelligence stix taxii", "awesome-threat-intelligence"),
+    ("public datasets for machine learning", "awesome-public-datasets"),
+    ("software architecture patterns", "awesome-software-architecture"),
+    ("algorithm learning resources", "awesome-algorithms"),
+    ("awesome lists index", "awesome-meta"),
 ]
 
 

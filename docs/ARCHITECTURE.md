@@ -7,7 +7,7 @@
                               |
                               v
    upstream GitHub lists  ---->  data/raw/<dir>/      (cloned data, gitignored)
-        (14 repos)                |
+        (24 repos)                |
                                   v   bin/awesome.py: parse -> hash -> index
                              index.db (SQLite + FTS5: entries, sections, files, hashes)
                                   |
@@ -25,7 +25,7 @@ of the schema; the plugin never re-implements a query.
 Only one or two files per list matter (`README.md` plus a couple of docs), and the useful unit is
 "the current upstream content", not a pinned commit. Submodules would pin SHAs into the parent
 history (constant version churn), complicate licensing, and force a recursive clone of ~14
-histories to get 14 markdown files. `manifest/repositories.json` holds the pins instead, and
+histories to get 24 markdown files. `manifest/repositories.json` holds the pins instead, and
 `manifest/sync.json` records the SHA each clone actually sits on — reproducible without coupling.
 
 **B. Raw repositories are not committed.**

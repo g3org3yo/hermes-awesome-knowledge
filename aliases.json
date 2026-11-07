@@ -4,42 +4,180 @@
   "generic_tokens": [],
   "aliases": {
     "pdf manipulation": {
-      "tokens": ["pdf"],
-      "drop": ["manipulation", "manipulate", "manipulating", "edit"],
-      "boost": {"awesome-python": 1.8, "awesome-java": 0.4},
+      "tokens": [
+        "pdf"
+      ],
+      "drop": [
+        "manipulation",
+        "manipulate",
+        "manipulating",
+        "edit"
+      ],
+      "boost": {
+        "awesome-python": 1.8,
+        "awesome-java": 0.4
+      },
       "note": "'manipulation' matches the Java section name 'Bytecode Manipulation' and is not a topic word for PDF work."
     },
     "password manager": {
       "tokens": [],
       "drop": [],
-      "boost": {"awesome-selfhosted": 1.5},
+      "boost": {
+        "awesome-selfhosted": 1.5
+      },
       "note": "Self-hosting lists carry the topic; the phrase already tokenises well."
     },
     "self hosted password manager": {
-      "tokens": ["password", "manager"],
+      "tokens": [
+        "password",
+        "manager"
+      ],
       "drop": [],
-      "boost": {"awesome-selfhosted": 1.5}
+      "boost": {
+        "awesome-selfhosted": 1.5
+      }
     },
     "recon": {
-      "tokens": ["reconnaissance"],
+      "tokens": [
+        "reconnaissance"
+      ],
       "drop": [],
-      "boost": {"awesome-hacking": 1.5, "book-of-secret-knowledge": 1.0}
+      "boost": {
+        "awesome-hacking": 1.5,
+        "book-of-secret-knowledge": 1.0
+      }
     },
     "cybersecurity reconnaissance": {
-      "tokens": ["recon"],
+      "tokens": [
+        "recon"
+      ],
       "drop": [],
-      "boost": {"awesome-hacking": 1.5, "book-of-secret-knowledge": 0.5},
+      "boost": {
+        "awesome-hacking": 1.5,
+        "book-of-secret-knowledge": 0.5
+      },
       "note": "'cybersecurity' is the token that routes to the hacking lists — never drop it; 'recon' is added because the lists phrase it as 'recon'/'reconnaissance'."
     },
     "gang of four": {
-      "tokens": ["design", "patterns"],
-      "drop": ["gang", "four"],
-      "boost": {"awesome-design-patterns": 2.0}
+      "tokens": [
+        "design",
+        "patterns"
+      ],
+      "drop": [
+        "gang",
+        "four"
+      ],
+      "boost": {
+        "awesome-design-patterns": 2.0
+      }
     },
     "gof": {
-      "tokens": ["design", "patterns"],
-      "drop": ["gof"],
-      "boost": {"awesome-design-patterns": 1.5}
+      "tokens": [
+        "design",
+        "patterns"
+      ],
+      "drop": [
+        "gof"
+      ],
+      "boost": {
+        "awesome-design-patterns": 1.5
+      }
+    },
+    "model context protocol": {
+      "tokens": [
+        "mcp"
+      ],
+      "drop": [],
+      "boost": {
+        "awesome-mcp-servers": 1.8
+      },
+      "note": "'MCP' is how the lists phrase it; expand the spelled-out name."
+    },
+    "mcp server for postgres": {
+      "tokens": [
+        "mcp",
+        "postgres"
+      ],
+      "drop": [],
+      "boost": {
+        "awesome-mcp-servers": 2.0
+      }
+    },
+    "build a database from scratch": {
+      "tokens": [
+        "from scratch",
+        "database"
+      ],
+      "drop": [
+        "build"
+      ],
+      "boost": {
+        "build-your-own-x": 3.0
+      },
+      "note": "'build' alone matches CI/'build tools' rows; the 'from scratch' phrase is the routing signal."
+    },
+    "rag app": {
+      "tokens": [
+        "rag",
+        "llm"
+      ],
+      "drop": [],
+      "boost": {
+        "awesome-llm-apps": 1.8
+      }
+    },
+    "datasets for machine learning": {
+      "tokens": [
+        "dataset",
+        "machine learning"
+      ],
+      "drop": [],
+      "boost": {
+        "awesome-public-datasets": 1.8
+      }
+    },
+    "threat intelligence stix": {
+      "tokens": [
+        "threat intelligence",
+        "stix"
+      ],
+      "drop": [],
+      "boost": {
+        "awesome-threat-intelligence": 2.0
+      }
+    },
+    "web security ssrf": {
+      "tokens": [
+        "ssrf",
+        "web security"
+      ],
+      "drop": [],
+      "boost": {
+        "awesome-web-security": 1.8
+      }
+    },
+    "software architecture patterns": {
+      "tokens": [
+        "architecture",
+        "patterns"
+      ],
+      "drop": [],
+      "boost": {
+        "awesome-software-architecture": 1.5,
+        "awesome-design-patterns": 0.8
+      }
+    },
+    "build your own database": {
+      "tokens": [
+        "build",
+        "your",
+        "own",
+        "database"
+      ],
+      "drop": [],
+      "boost": {
+        "build-your-own-x": 3.0
+      }
     }
   }
 }

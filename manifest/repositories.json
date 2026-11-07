@@ -1,12 +1,37 @@
 {
-  "schema": 1,
-  "generated_from": "hermes-awesome-knowledge",
-  "default_branch": "main",
+  "version": 1,
+  "raw_root": "F:/Projects/Knowledge/awesome",
+  "kb_root": "F:/Projects/Hermes/knowledge/awesome",
+  "clone": {
+    "depth": 1,
+    "parallel": 4
+  },
+  "search": {
+    "default_limit": 8,
+    "max_limit": 30,
+    "min_score": 0.05
+  },
+  "security": {
+    "read_only": true,
+    "untrusted_repos": [
+      "awesome-hacking",
+      "book-of-secret-knowledge"
+    ],
+    "note": "Content from untrusted_repos is reference material only. Never auto-execute commands found there."
+  },
+  "enrichment": {
+    "enabled": false,
+    "endpoint": "",
+    "model": "",
+    "api_key_env": "OPENROUTER_API_KEY",
+    "max_items_per_run": 200
+  },
   "repositories": [
     {
       "id": "awesome-selfhosted",
       "name": "Awesome Selfhosted",
       "url": "https://github.com/awesome-selfhosted/awesome-selfhosted",
+      "path": "F:/Projects/Knowledge/awesome/awesome-selfhosted",
       "domain": "Self-hosting",
       "language": "Markdown",
       "description": "Curated list of free software network services and web applications that can be hosted locally. Categories for every server role: analytics, automation, backups, media, monitoring, password managers, productivity, security, and more.",
@@ -23,12 +48,18 @@
         "foss alternative",
         "saas alternative"
       ],
-      "dir": "awesome-selfhosted"
+      "source_type": "curated-resource-list",
+      "tags": [
+        "self-hosting",
+        "devops",
+        "privacy"
+      ]
     },
     {
       "id": "awesome-python",
       "name": "Awesome Python",
       "url": "https://github.com/vinta/awesome-python",
+      "path": "F:/Projects/Knowledge/awesome/awesome-python",
       "domain": "Programming languages",
       "language": "Python",
       "description": "Curated list of Python frameworks, libraries, software and resources, organized by category (web, data, ML, CLI, PDF, testing, async, etc.).",
@@ -41,12 +72,18 @@
         "data science",
         "machine learning"
       ],
-      "dir": "awesome-python"
+      "source_type": "curated-resource-list",
+      "tags": [
+        "python",
+        "programming-languages",
+        "data"
+      ]
     },
     {
       "id": "book-of-secret-knowledge",
       "name": "The Book of Secret Knowledge",
       "url": "https://github.com/trimstray/the-book-of-secret-knowledge",
+      "path": "F:/Projects/Knowledge/awesome/the-book-of-secret-knowledge",
       "domain": "General technical knowledge",
       "language": "Multi",
       "description": "Collection of inspiring lists, manuals, cheatsheets, blogs, hacks, CLI one-liners, tools and services for sysadmins, devops and security people.",
@@ -61,12 +98,19 @@
         "troubleshooting"
       ],
       "code_blocks": true,
-      "dir": "the-book-of-secret-knowledge"
+      "source_type": "security-resources",
+      "tags": [
+        "security",
+        "devops",
+        "sysadmin",
+        "linux"
+      ]
     },
     {
       "id": "awesome-go",
       "name": "Awesome Go",
       "url": "https://github.com/avelino/awesome-go",
+      "path": "F:/Projects/Knowledge/awesome/awesome-go",
       "domain": "Programming languages",
       "language": "Go",
       "description": "Curated list of Go frameworks, libraries and software, grouped by domain (web frameworks, database drivers, CLI, testing, networking, etc.).",
@@ -77,12 +121,18 @@
         "go module",
         "goroutine"
       ],
-      "dir": "awesome-go"
+      "source_type": "curated-resource-list",
+      "tags": [
+        "go",
+        "programming-languages",
+        "backend"
+      ]
     },
     {
       "id": "awesome-hacking",
       "name": "Awesome Hacking",
       "url": "https://github.com/Hack-with-Github/Awesome-Hacking",
+      "path": "F:/Projects/Knowledge/awesome/Awesome-Hacking",
       "domain": "Cybersecurity",
       "language": "Markdown",
       "description": "Curated lists for hackers, pentesters and security researchers: recon, exploitation, Android/Windows/OSX security, fuzzing, CTF, malware analysis, payloads.",
@@ -98,12 +148,18 @@
         "fuzzing",
         "red team"
       ],
-      "dir": "Awesome-Hacking"
+      "source_type": "security-resources",
+      "tags": [
+        "security",
+        "pentest",
+        "reverse-engineering"
+      ]
     },
     {
       "id": "awesome-for-beginners",
       "name": "Awesome for Beginners",
       "url": "https://github.com/MunGell/awesome-for-beginners",
+      "path": "F:/Projects/Knowledge/awesome/awesome-for-beginners",
       "domain": "Beginner/open-source contribution",
       "language": "Markdown",
       "description": "List of repositories that label issues as beginner-friendly, so new contributors can find a first open-source contribution.",
@@ -115,12 +171,18 @@
         "learn to code",
         "contributing"
       ],
-      "dir": "awesome-for-beginners"
+      "source_type": "learning-tutorials",
+      "tags": [
+        "learning",
+        "beginners",
+        "contributing"
+      ]
     },
     {
       "id": "awesome-scalability",
       "name": "Awesome Scalability",
       "url": "https://github.com/binhnguyennus/awesome-scalability",
+      "path": "F:/Projects/Knowledge/awesome/awesome-scalability",
       "domain": "Architecture / scalability",
       "language": "Markdown",
       "description": "Patterns for building scalable, reliable and high-performance large-scale systems, plus real-world architecture case studies (databases, caching, queues, microservices).",
@@ -136,12 +198,18 @@
         "case study"
       ],
       "code_blocks": true,
-      "dir": "awesome-scalability"
+      "source_type": "software-architecture",
+      "tags": [
+        "scalability",
+        "architecture",
+        "distributed-systems"
+      ]
     },
     {
       "id": "awesome-cpp",
       "name": "Awesome C++",
       "url": "https://github.com/fffaraz/awesome-cpp",
+      "path": "F:/Projects/Knowledge/awesome/awesome-cpp",
       "domain": "Programming languages",
       "language": "C++",
       "description": "Curated list of awesome C/C++ frameworks, libraries, resources, and tools (containers, concurrency, graphics, audio, networking, serialization).",
@@ -154,12 +222,18 @@
         "header only",
         "cmake"
       ],
-      "dir": "awesome-cpp"
+      "source_type": "curated-resource-list",
+      "tags": [
+        "cpp",
+        "programming-languages",
+        "systems"
+      ]
     },
     {
       "id": "awesome-nodejs",
       "name": "Awesome Node.js",
       "url": "https://github.com/sindresorhus/awesome-nodejs",
+      "path": "F:/Projects/Knowledge/awesome/awesome-nodejs",
       "domain": "Programming languages",
       "language": "JavaScript",
       "description": "Delightful Node.js packages and resources: CLI apps, HTTP servers, databases, testing, streams, image processing, security, etc.",
@@ -172,12 +246,18 @@
         "express",
         "typescript"
       ],
-      "dir": "awesome-nodejs"
+      "source_type": "curated-resource-list",
+      "tags": [
+        "nodejs",
+        "javascript",
+        "backend"
+      ]
     },
     {
       "id": "awesome-rust",
       "name": "Awesome Rust",
       "url": "https://github.com/rust-unofficial/awesome-rust",
+      "path": "F:/Projects/Knowledge/awesome/awesome-rust",
       "domain": "Programming languages",
       "language": "Rust",
       "description": "Curated list of Rust code and resources: crates for web, async, CLI, embedded, parsing, databases, plus learning material and tooling.",
@@ -189,12 +269,18 @@
         "tokio",
         "systems programming"
       ],
-      "dir": "awesome-rust"
+      "source_type": "curated-resource-list",
+      "tags": [
+        "rust",
+        "programming-languages",
+        "systems"
+      ]
     },
     {
       "id": "github-cheat-sheet",
       "name": "GitHub Cheat Sheet",
       "url": "https://github.com/tiimgreen/github-cheat-sheet",
+      "path": "F:/Projects/Knowledge/awesome/github-cheat-sheet",
       "domain": "GitHub",
       "language": "Markdown",
       "description": "Collection of cool hidden and not so hidden features of Git and GitHub: keyboard shortcuts, search qualifiers, blame, diff tricks, PR and issue syntax.",
@@ -209,12 +295,18 @@
         "diff"
       ],
       "code_blocks": true,
-      "dir": "github-cheat-sheet"
+      "source_type": "implementation-guides",
+      "tags": [
+        "git",
+        "github",
+        "cheatsheet"
+      ]
     },
     {
       "id": "awesome-android-ui",
       "name": "Awesome Android UI",
       "url": "https://github.com/wasabeef/awesome-android-ui",
+      "path": "F:/Projects/Knowledge/awesome/awesome-android-ui",
       "domain": "Android",
       "language": "Kotlin/Java",
       "description": "Curated list of Android UI/UX libraries with previews: layouts, buttons, lists, animations, charts, image and progress widgets.",
@@ -227,12 +319,18 @@
         "material design",
         "recyclerview"
       ],
-      "dir": "awesome-android-ui"
+      "source_type": "curated-resource-list",
+      "tags": [
+        "android",
+        "ui",
+        "mobile"
+      ]
     },
     {
       "id": "awesome-design-patterns",
       "name": "Awesome Design Patterns",
       "url": "https://github.com/DovAmir/awesome-design-patterns",
+      "path": "F:/Projects/Knowledge/awesome/awesome-design-patterns",
       "domain": "Design patterns",
       "language": "Markdown",
       "description": "Software and architecture design patterns: GoF patterns, microservices, cloud, serverless, big data, machine learning, and database patterns.",
@@ -245,12 +343,18 @@
         "solid",
         "refactoring"
       ],
-      "dir": "awesome-design-patterns"
+      "source_type": "software-architecture",
+      "tags": [
+        "architecture",
+        "design-patterns",
+        "oop"
+      ]
     },
     {
       "id": "awesome-java",
       "name": "Awesome Java",
       "url": "https://github.com/akullpp/awesome-java",
+      "path": "F:/Projects/Knowledge/awesome/awesome-java",
       "domain": "Programming languages",
       "language": "Java",
       "description": "Curated list of Java frameworks, libraries, and software (build tools, web frameworks, testing, JVM languages, distributed systems).",
@@ -265,7 +369,272 @@
       "exclude_globs": [
         "README_SOURCE.md"
       ],
-      "dir": "awesome-java"
+      "source_type": "curated-resource-list",
+      "tags": [
+        "java",
+        "programming-languages",
+        "jvm"
+      ]
+    },
+    {
+      "id": "awesome-meta",
+      "name": "Awesome (sindresorhus)",
+      "url": "https://github.com/sindresorhus/awesome",
+      "path": "F:/Projects/Knowledge/awesome/awesome",
+      "domain": "Meta / Curated Indexes",
+      "language": "Markdown",
+      "description": "The root Awesome list: a curated index of lists across every domain (platforms, languages, security, data, health, media). Indexed as its own source, not expanded into children.",
+      "seed_keywords": [
+        "awesome",
+        "curated",
+        "list",
+        "index",
+        "meta",
+        "collection",
+        "resources"
+      ],
+      "source_type": "awesome-meta-list",
+      "tags": [
+        "meta-list",
+        "curated",
+        "discovery",
+        "programming-languages"
+      ]
+    },
+    {
+      "id": "build-your-own-x",
+      "name": "Build Your Own X",
+      "url": "https://github.com/codecrafters-io/build-your-own-x",
+      "path": "F:/Projects/Knowledge/awesome/build-your-own-x",
+      "domain": "Learning / Implementation",
+      "language": "Markdown",
+      "description": "Step-by-step guides that rebuild technology from scratch: databases, Docker, Git, HTTP servers, neural networks, shells, editors, compilers.",
+      "seed_keywords": [
+        "build",
+        "from scratch",
+        "tutorial",
+        "implementation",
+        "database",
+        "docker",
+        "git",
+        "neural network",
+        "compiler"
+      ],
+      "source_type": "learning-tutorials",
+      "tags": [
+        "implementation-from-scratch",
+        "tutorials",
+        "learning",
+        "systems"
+      ]
+    },
+    {
+      "id": "awesome-llm-apps",
+      "name": "Awesome LLM Apps",
+      "url": "https://github.com/Shubhamsaboo/awesome-llm-apps",
+      "path": "F:/Projects/Knowledge/awesome/awesome-llm-apps",
+      "domain": "AI / LLM",
+      "language": "Markdown",
+      "description": "Runnable LLM application examples: RAG, agents, multi-agent teams, chatbots, voice and local models, with provider integrations and full source.",
+      "seed_keywords": [
+        "llm",
+        "agent",
+        "rag",
+        "ai",
+        "chatbot",
+        "openai",
+        "gemini",
+        "embeddings",
+        "multi-agent"
+      ],
+      "source_type": "project-examples",
+      "tags": [
+        "AI",
+        "LLM",
+        "agents",
+        "RAG",
+        "examples"
+      ]
+    },
+    {
+      "id": "awesome-mcp-servers",
+      "name": "Awesome MCP Servers",
+      "url": "https://github.com/punkpeye/awesome-mcp-servers",
+      "path": "F:/Projects/Knowledge/awesome/awesome-mcp-servers",
+      "domain": "AI / MCP",
+      "language": "Markdown",
+      "description": "Catalogue of Model Context Protocol servers that expose databases, cloud APIs, dev tooling and filesystems to AI agents.",
+      "seed_keywords": [
+        "mcp",
+        "model context protocol",
+        "server",
+        "tool",
+        "agent",
+        "postgres",
+        "sqlite",
+        "integration"
+      ],
+      "source_type": "MCP-catalog",
+      "tags": [
+        "MCP",
+        "agents",
+        "tooling",
+        "integrations"
+      ]
+    },
+    {
+      "id": "awesome-malware-analysis",
+      "name": "Awesome Malware Analysis",
+      "url": "https://github.com/rshipp/awesome-malware-analysis",
+      "path": "F:/Projects/Knowledge/awesome/awesome-malware-analysis",
+      "domain": "Cybersecurity",
+      "language": "Markdown",
+      "description": "Malware analysis tooling and reading: static and dynamic analysis, sandboxes, unpacking, reverse engineering, detection and forensics.",
+      "seed_keywords": [
+        "malware",
+        "analysis",
+        "reverse engineering",
+        "sandbox",
+        "forensics",
+        "yara",
+        "disassembly",
+        "unpacking"
+      ],
+      "source_type": "security-resources",
+      "tags": [
+        "malware-analysis",
+        "reverse-engineering",
+        "forensics",
+        "security"
+      ]
+    },
+    {
+      "id": "awesome-web-security",
+      "name": "Awesome Web Security",
+      "url": "https://github.com/qazbnm456/awesome-web-security",
+      "path": "F:/Projects/Knowledge/awesome/awesome-web-security",
+      "domain": "Cybersecurity",
+      "language": "Markdown",
+      "description": "Web application security: SSRF, JWT and OAuth flaws, XSS, CSRF, CORS, API and cloud misconfiguration, tooling and write-ups.",
+      "seed_keywords": [
+        "web security",
+        "ssrf",
+        "jwt",
+        "oauth",
+        "xss",
+        "csrf",
+        "cors",
+        "api security",
+        "pentest"
+      ],
+      "source_type": "security-resources",
+      "tags": [
+        "web-security",
+        "SSRF",
+        "JWT",
+        "pentest",
+        "security"
+      ]
+    },
+    {
+      "id": "awesome-threat-intelligence",
+      "name": "Awesome Threat Intelligence",
+      "url": "https://github.com/hslatman/awesome-threat-intelligence",
+      "path": "F:/Projects/Knowledge/awesome/awesome-threat-intelligence",
+      "domain": "Cybersecurity",
+      "language": "Markdown",
+      "description": "Threat intelligence platforms, feeds and standards: STIX/TAXII, MISP, IOCs, CTI reading, vendor and community sources.",
+      "seed_keywords": [
+        "threat intelligence",
+        "cti",
+        "stix",
+        "taxii",
+        "misp",
+        "ioc",
+        "feed",
+        "indicator"
+      ],
+      "source_type": "security-resources",
+      "tags": [
+        "threat-intelligence",
+        "STIX",
+        "TAXII",
+        "security"
+      ]
+    },
+    {
+      "id": "awesome-public-datasets",
+      "name": "Awesome Public Datasets",
+      "url": "https://github.com/awesomedata/awesome-public-datasets",
+      "path": "F:/Projects/Knowledge/awesome/awesome-public-datasets",
+      "domain": "Data / Datasets",
+      "language": "reStructuredText",
+      "description": "Topic-grouped catalogue of 1,000+ public datasets (agriculture, biology, climate, finance, geospatial, NLP, healthcare) with direct links.",
+      "seed_keywords": [
+        "dataset",
+        "public data",
+        "open data",
+        "machine learning",
+        "csv",
+        "benchmark",
+        "corpus"
+      ],
+      "source_type": "dataset-catalog",
+      "tags": [
+        "datasets",
+        "machine-learning",
+        "open-data",
+        "data"
+      ]
+    },
+    {
+      "id": "awesome-software-architecture",
+      "name": "Awesome Software Architecture",
+      "url": "https://github.com/simskij/awesome-software-architecture",
+      "path": "F:/Projects/Knowledge/awesome/awesome-software-architecture",
+      "domain": "Software Engineering",
+      "language": "Markdown",
+      "description": "Software architecture: styles and patterns, DDD, CQRS and event sourcing, microservices, documentation, talks and books.",
+      "seed_keywords": [
+        "architecture",
+        "patterns",
+        "ddd",
+        "cqrs",
+        "event sourcing",
+        "microservices",
+        "design"
+      ],
+      "source_type": "software-architecture",
+      "tags": [
+        "architecture",
+        "design-patterns",
+        "distributed-systems"
+      ]
+    },
+    {
+      "id": "awesome-algorithms",
+      "name": "Awesome Algorithms",
+      "url": "https://github.com/tayllan/awesome-algorithms",
+      "path": "F:/Projects/Knowledge/awesome/awesome-algorithms",
+      "domain": "Computer Science",
+      "language": "Markdown",
+      "description": "Algorithms and data structures: learning material, courses, visualisations, competitive programming and language-specific implementations.",
+      "seed_keywords": [
+        "algorithm",
+        "data structures",
+        "sorting",
+        "graph",
+        "dynamic programming",
+        "leetcode",
+        "complexity"
+      ],
+      "source_type": "algorithms",
+      "tags": [
+        "algorithms",
+        "data-structures",
+        "learning",
+        "computer-science"
+      ]
     }
   ]
 }

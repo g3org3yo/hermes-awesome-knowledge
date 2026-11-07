@@ -1,31 +1,49 @@
 {
   "repositories": [
     {
-      "id": "awesome-selfhosted",
-      "name": "Awesome Selfhosted",
-      "url": "https://github.com/awesome-selfhosted/awesome-selfhosted",
-      "dir": "awesome-selfhosted",
-      "license_file": "LICENSE",
-      "license": "CC (see LICENSE)",
-      "first_line": "License: CC-BY-SA-3.0"
+      "id": "awesome-algorithms",
+      "name": "Awesome Algorithms",
+      "url": "https://github.com/tayllan/awesome-algorithms",
+      "dir": "awesome-algorithms",
+      "license": "CC-BY-4.0",
+      "license_file": "README.md",
+      "note": "declared in README, no LICENSE file"
     },
     {
-      "id": "awesome-python",
-      "name": "Awesome Python",
-      "url": "https://github.com/vinta/awesome-python",
-      "dir": "awesome-python",
+      "id": "awesome-android-ui",
+      "name": "Awesome Android UI",
+      "url": "https://github.com/wasabeef/awesome-android-ui",
+      "dir": "awesome-android-ui",
       "license_file": "LICENSE",
-      "license": "CC (see LICENSE)",
-      "first_line": "Creative Commons Attribution 4.0 International License (CC BY 4.0)"
-    },
-    {
-      "id": "book-of-secret-knowledge",
-      "name": "The Book of Secret Knowledge",
-      "url": "https://github.com/trimstray/the-book-of-secret-knowledge",
-      "dir": "the-book-of-secret-knowledge",
-      "license_file": "LICENSE.md",
       "license": "MIT",
       "first_line": "MIT License"
+    },
+    {
+      "id": "awesome-cpp",
+      "name": "Awesome C++",
+      "url": "https://github.com/fffaraz/awesome-cpp",
+      "dir": "awesome-cpp",
+      "license_file": "LICENSE",
+      "license": "MIT",
+      "first_line": "MIT License"
+    },
+    {
+      "id": "awesome-design-patterns",
+      "name": "Awesome Design Patterns",
+      "url": "https://github.com/DovAmir/awesome-design-patterns",
+      "dir": "awesome-design-patterns",
+      "license_file": null,
+      "license": "see upstream",
+      "first_line": ""
+    },
+    {
+      "id": "awesome-for-beginners",
+      "name": "Awesome for Beginners",
+      "url": "https://github.com/MunGell/awesome-for-beginners",
+      "dir": "awesome-for-beginners",
+      "license_file": null,
+      "license": "see upstream",
+      "first_line": ""
     },
     {
       "id": "awesome-go",
@@ -46,31 +64,45 @@
       "first_line": "CC0 1.0 Universal"
     },
     {
-      "id": "awesome-for-beginners",
-      "name": "Awesome for Beginners",
-      "url": "https://github.com/MunGell/awesome-for-beginners",
-      "dir": "awesome-for-beginners",
-      "license_file": null,
-      "license": "see upstream",
-      "first_line": ""
+      "id": "awesome-java",
+      "name": "Awesome Java",
+      "url": "https://github.com/akullpp/awesome-java",
+      "dir": "awesome-java",
+      "license_file": "LICENSE",
+      "license": "CC (see LICENSE)",
+      "first_line": "Attribution-ShareAlike 4.0 International"
     },
     {
-      "id": "awesome-scalability",
-      "name": "Awesome Scalability",
-      "url": "https://github.com/binhnguyennus/awesome-scalability",
-      "dir": "awesome-scalability",
-      "license_file": "LICENSE",
-      "license": "MIT",
-      "first_line": "MIT License"
+      "id": "awesome-llm-apps",
+      "name": "Awesome LLM Apps",
+      "url": "https://github.com/Shubhamsaboo/awesome-llm-apps",
+      "dir": "awesome-llm-apps",
+      "license": "Apache-2.0",
+      "license_file": "LICENSE"
     },
     {
-      "id": "awesome-cpp",
-      "name": "Awesome C++",
-      "url": "https://github.com/fffaraz/awesome-cpp",
-      "dir": "awesome-cpp",
-      "license_file": "LICENSE",
+      "id": "awesome-malware-analysis",
+      "name": "Awesome Malware Analysis",
+      "url": "https://github.com/rshipp/awesome-malware-analysis",
+      "dir": "awesome-malware-analysis",
+      "license": "CC-BY-4.0",
+      "license_file": "LICENSE"
+    },
+    {
+      "id": "awesome-mcp-servers",
+      "name": "Awesome MCP Servers",
+      "url": "https://github.com/punkpeye/awesome-mcp-servers",
+      "dir": "awesome-mcp-servers",
       "license": "MIT",
-      "first_line": "MIT License"
+      "license_file": "LICENSE"
+    },
+    {
+      "id": "awesome-meta",
+      "name": "Awesome (sindresorhus)",
+      "url": "https://github.com/sindresorhus/awesome",
+      "dir": "awesome-meta",
+      "license": "CC0-1.0",
+      "license_file": "license"
     },
     {
       "id": "awesome-nodejs",
@@ -82,6 +114,23 @@
       "first_line": "Creative Commons Legal Code"
     },
     {
+      "id": "awesome-public-datasets",
+      "name": "Awesome Public Datasets",
+      "url": "https://github.com/awesomedata/awesome-public-datasets",
+      "dir": "awesome-public-datasets",
+      "license": "MIT",
+      "license_file": "LICENSE"
+    },
+    {
+      "id": "awesome-python",
+      "name": "Awesome Python",
+      "url": "https://github.com/vinta/awesome-python",
+      "dir": "awesome-python",
+      "license_file": "LICENSE",
+      "license": "CC (see LICENSE)",
+      "first_line": "Creative Commons Attribution 4.0 International License (CC BY 4.0)"
+    },
+    {
       "id": "awesome-rust",
       "name": "Awesome Rust",
       "url": "https://github.com/rust-unofficial/awesome-rust",
@@ -91,6 +140,67 @@
       "first_line": "Creative Commons Legal Code"
     },
     {
+      "id": "awesome-scalability",
+      "name": "Awesome Scalability",
+      "url": "https://github.com/binhnguyennus/awesome-scalability",
+      "dir": "awesome-scalability",
+      "license_file": "LICENSE",
+      "license": "MIT",
+      "first_line": "MIT License"
+    },
+    {
+      "id": "awesome-selfhosted",
+      "name": "Awesome Selfhosted",
+      "url": "https://github.com/awesome-selfhosted/awesome-selfhosted",
+      "dir": "awesome-selfhosted",
+      "license_file": "LICENSE",
+      "license": "CC (see LICENSE)",
+      "first_line": "License: CC-BY-SA-3.0"
+    },
+    {
+      "id": "awesome-software-architecture",
+      "name": "Awesome Software Architecture",
+      "url": "https://github.com/simskij/awesome-software-architecture",
+      "dir": "awesome-software-architecture",
+      "license": "CC0-1.0",
+      "license_file": "license.md"
+    },
+    {
+      "id": "awesome-threat-intelligence",
+      "name": "Awesome Threat Intelligence",
+      "url": "https://github.com/hslatman/awesome-threat-intelligence",
+      "dir": "awesome-threat-intelligence",
+      "license": "Apache-2.0",
+      "license_file": "LICENSE"
+    },
+    {
+      "id": "awesome-web-security",
+      "name": "Awesome Web Security",
+      "url": "https://github.com/qazbnm456/awesome-web-security",
+      "dir": "awesome-web-security",
+      "license": "CC0-1.0",
+      "license_file": "README.md",
+      "note": "declared in README, no LICENSE file"
+    },
+    {
+      "id": "book-of-secret-knowledge",
+      "name": "The Book of Secret Knowledge",
+      "url": "https://github.com/trimstray/the-book-of-secret-knowledge",
+      "dir": "the-book-of-secret-knowledge",
+      "license_file": "LICENSE.md",
+      "license": "MIT",
+      "first_line": "MIT License"
+    },
+    {
+      "id": "build-your-own-x",
+      "name": "Build Your Own X",
+      "url": "https://github.com/codecrafters-io/build-your-own-x",
+      "dir": "build-your-own-x",
+      "license": "NO LICENSE",
+      "license_file": "",
+      "note": "upstream ships no license file: index it, never redistribute its content"
+    },
+    {
       "id": "github-cheat-sheet",
       "name": "GitHub Cheat Sheet",
       "url": "https://github.com/tiimgreen/github-cheat-sheet",
@@ -98,33 +208,6 @@
       "license_file": "LICENSE",
       "license": "MIT",
       "first_line": "Copyright (c) 2014 Tim Green"
-    },
-    {
-      "id": "awesome-android-ui",
-      "name": "Awesome Android UI",
-      "url": "https://github.com/wasabeef/awesome-android-ui",
-      "dir": "awesome-android-ui",
-      "license_file": "LICENSE",
-      "license": "MIT",
-      "first_line": "MIT License"
-    },
-    {
-      "id": "awesome-design-patterns",
-      "name": "Awesome Design Patterns",
-      "url": "https://github.com/DovAmir/awesome-design-patterns",
-      "dir": "awesome-design-patterns",
-      "license_file": null,
-      "license": "see upstream",
-      "first_line": ""
-    },
-    {
-      "id": "awesome-java",
-      "name": "Awesome Java",
-      "url": "https://github.com/akullpp/awesome-java",
-      "dir": "awesome-java",
-      "license_file": "LICENSE",
-      "license": "CC (see LICENSE)",
-      "first_line": "Attribution-ShareAlike 4.0 International"
     }
   ]
 }
