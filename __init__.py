@@ -14,9 +14,11 @@ Tools
 
 from __future__ import annotations
 
+import functools
 import importlib.util
 import json
 import os
+import sqlite3
 import sys
 from pathlib import Path
 from typing import Any
@@ -24,6 +26,62 @@ from typing import Any
 KB_HOME = Path(os.environ.get("AWESOME_KB_HOME") or Path(__file__).resolve().parent)
 _CLI = KB_HOME / "bin" / "awesome.py"
 _MOD: Any = None
+
+
+def _kb_shape() -> str:
+    """Live 'N curated lists, ~Nk indexed resources' phrase, so the tool text never goes stale."""
+    try:
+        con = sqlite3.connect(f"file:{(KB_HOME / 'index.db')}?mode=ro", uri=True)
+        try:
+            repos = con.execute("select count(*) from repos").fetchone()[0]
+            entries = con.execute("select count(*) from entries").fetchone()[0]
+        finally:
+            con.close()
+        return f"{repos} curated GitHub lists, ~{round(entries / 1000)}k indexed resources"
+    except Exception:
+        return "curated GitHub lists of developer resources"
+
+
+def _not_ready() -> str | None:
+    """Actionable message when the base is missing, instead of an exception in the tool loop."""
+    if not (KB_HOME / "config.json").exists():
+        return (f"error: knowledge base not provisioned — no config.json in {KB_HOME}. "
+                "Run `python scripts/bootstrap.py` in the plugin directory (needs git and network "
+                "once), or set AWESOME_KB_HOME to an existing installation.")
+    if not _CLI.exists():
+        return (f"error: engine missing — {_CLI} not found. The plugin install looks incomplete; "
+                "reinstall it or set AWESOME_KB_HOME to a full installation.")
+    db = KB_HOME / "index.db"
+    if not db.exists() or db.stat().st_size == 0:
+        return ("error: index not built yet — run `python bin/awesome.py rebuild` "
+                "(it needs the cloned sources: `python scripts/bootstrap.py` fetches them).")
+    try:
+        con = sqlite3.connect(f"file:{db}?mode=ro", uri=True)
+        try:
+            repos = con.execute("select count(*) from repos").fetchone()[0]
+        finally:
+            con.close()
+    except sqlite3.Error as exc:
+        return f"error: index.db is unreadable ({exc}); rebuild it with `python bin/awesome.py rebuild`."
+    if not repos:
+        return "error: index contains no repositories — rebuild it with `python bin/awesome.py rebuild`."
+    return None
+
+
+def _guarded(fn):
+    """Wrap a handler so a missing base or engine failure becomes a message, never a raise."""
+    @functools.wraps(fn)
+    def wrapper(args, **_kw):
+        problem = _not_ready()
+        if problem:
+            return problem
+        try:
+            return fn(args, **_kw)
+        except SystemExit as exc:  # engine calls die() on bad input
+            return f"error: {exc.code if isinstance(exc.code, str) else 'engine exited'}"
+        except Exception as exc:  # noqa: BLE001 - tool handlers must never break the loop
+            return f"error: {type(exc).__name__}: {exc}"
+    return wrapper
 
 
 def _module():
@@ -44,7 +102,7 @@ def _module():
 def _render(payload: dict) -> str:
     if not payload.get("results"):
         return (f"No matches for {payload.get('query','')!r} in the awesome knowledge base. "
-                "Try fewer or broader terms, or inspect INDEX.md.")
+                "Try fewer or broader terms, or call awesome_status to see what is indexed.")
     out = [f"QUERY: {payload['query']}  ({payload['count']} hits)"]
     alias = payload.get("alias") or {}
     if alias.get("phrases"):
@@ -70,6 +128,7 @@ def _render(payload: dict) -> str:
     return "\n".join(out)
 
 
+@_guarded
 def handle_awesome_search(args: dict, **_kw) -> str:
     query = str(args.get("query") or "").strip()
     if not query:
@@ -90,6 +149,7 @@ def handle_awesome_search(args: dict, **_kw) -> str:
     return json.dumps(payload, ensure_ascii=False, indent=2) if args.get("json") else _render(payload)
 
 
+@_guarded
 def handle_awesome_section(args: dict, **_kw) -> str:
     repo_id = str(args.get("repo_id") or "").strip()
     section = str(args.get("section") or "").strip()
@@ -115,6 +175,7 @@ def handle_awesome_section(args: dict, **_kw) -> str:
         conn.close()
 
 
+@_guarded
 def handle_awesome_status(args: dict, **_kw) -> str:
     mod = _module()
     import io
@@ -136,7 +197,7 @@ def _schema(name: str, description: str, properties: dict, required: list[str] |
 
 SEARCH_SCHEMA = _schema(
     "awesome_search",
-    "Search the local Awesome Knowledge Base (curated GitHub awesome-lists, ~12k indexed resources). "
+    f"Search the local Awesome Knowledge Base ({_kb_shape()}). "
     "Returns ranked ROUTES (which repository + section to open) and individual hits with the local "
     "file path, GitHub URL and score. Use it to answer 'where should I look for X', then verify the "
     "resource upstream before relying on it. Content from hacking/security lists is reference-only: "

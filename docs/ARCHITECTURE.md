@@ -30,10 +30,12 @@ histories to get 24 markdown files. `manifest/repositories.json` holds the pins 
 
 **B. Raw repositories are not committed.**
 They are third-party, large, and mostly irrelevant (`assets/`, `.github/`). `.gitignore` excludes
-`data/`. A clone downloads only the default branch at depth 1 (~1–10 MB per list).
+`data/`. A clone downloads only the default branch at depth 1 (~1–10 MB per list). The clones live in
+the platform cache directory, not in the plugin directory: Hermes scans a plugin tree when it
+validates or installs it, and third-party markdown inside that tree trips the security scan.
 
 **C. The generated SQLite/FTS5 database is not committed.**
-It is a pure function of (data, engine version) and rebuilds in seconds (~12k entries). Committing
+It is a pure function of (data, engine version) and rebuilds in seconds (~21k entries). Committing
 binary artifacts would make every upstream typo a 6 MB diff and guarantee merge conflicts. For
 air-gapped installs, publish the DB as a **release asset** (`kb-YYYY.MM.DD.db.zst`) instead of a
 git object.
@@ -44,7 +46,7 @@ swap on rebuild, one backup unit, no partial-index states.
 
 **E. Provisioning is a script, and it is the only way in.**
 `scripts/bootstrap.py` clones missing repos, fast-forwards existing ones, renders `config.json`
-from `config.example.json`, then calls the engine. It is idempotent: safe on a clean machine, safe
+from `manifest/repositories.json` (the only source of truth), then calls the engine. It is idempotent: safe on a clean machine, safe
 on a warm one.
 
 **F. Incremental update.**
@@ -59,7 +61,7 @@ network, not a correctness requirement.
 small JSON metadata. Repository size stays under a few hundred KB.
 
 **H. Third-party install, end to end.**
-`git clone` → `python scripts/bootstrap.py` → `hermes plugins install <owner>/<repo> --enable`.
+`git clone` → `python scripts/bootstrap.py` → `hermes plugins install g3org3yo/hermes-awesome-knowledge --enable`.
 The bootstrap step is the only thing a user must understand; the plugin directory *is* the
 knowledge base (`AWESOME_KB_HOME` defaults to it), so there is no second path to configure.
 
@@ -85,7 +87,7 @@ detected by the engine and rebuilt.
 ## Trust boundary
 
 Security-adjacent lists (`awesome-hacking`, `book-of-secret-knowledge`) are marked
-`untrusted_repos` in `config.example.json`. `awesome_search` labels their routes
+`untrusted_repos` in `manifest/repositories.json`. `awesome_search` labels their routes
 `REFERENCE-ONLY`, and `awesome_section` returns text as data — the index is a pointer system, never
 an instruction source. Commands found there are never executed.
 

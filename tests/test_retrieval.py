@@ -30,6 +30,10 @@ def _load_cli():
 class RetrievalTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
+        if not (KB_HOME / "config.json").exists() or not (KB_HOME / "index.db").exists():
+            raise unittest.SkipTest(
+                "knowledge base not provisioned in this checkout — "
+                "run `python scripts/bootstrap.py` first")
         cls.aw = _load_cli()
         cls.cfg = cls.aw.load_config()
         cls.conn = cls.aw.connect()
@@ -151,10 +155,11 @@ class RetrievalTest(unittest.TestCase):
     def test_builtin_selftest_passes(self):
         failures = []
         for query, expected in self.aw.SELFTEST_QUERIES:
-            payload = self.search(query, limit=3)
-            routed = [r["repo_id"] for r in payload["routes"]] or [h["repo_id"] for h in payload["results"]]
-            if expected not in routed:
-                failures.append((query, expected, routed))
+            payload = self.search(query, limit=8)   # same window as cmd_selftest
+            routed = [r["repo_id"] for r in payload["routes"]]
+            top_hits = [h["repo_id"] for h in payload["results"][:3]]
+            if expected not in routed and expected not in top_hits:
+                failures.append((query, expected, routed[:3]))
         self.assertEqual(failures, [], f"routing regressions: {failures}")
 
     # ------------------------------------------------------------ read-only

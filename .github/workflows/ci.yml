@@ -1,0 +1,62 @@
+name: ci
+
+on:
+  push:
+    branches: [master, main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  checks:
+    name: checks (py${{ matrix.python }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.10", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+
+      - name: Compile every module
+        run: python -m compileall -q bin scripts tests __init__.py
+
+      - name: Manifest and license integrity
+        run: python scripts/check_manifest.py
+
+      - name: Adapter tests (fresh clone, no knowledge base)
+        run: python tests/test_plugin_adapter.py -v
+
+  smoke:
+    name: end-to-end smoke (one source)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Bootstrap a single source
+        run: python scripts/bootstrap.py --only awesome-python --no-selftest
+
+      - name: Query the built index
+        run: |
+          set -euo pipefail
+          out=$(python bin/awesome.py search "pdf library" --repo awesome-python --limit 3)
+          echo "$out"
+          python - "$out" <<'PY'
+          import sys
+          out = sys.argv[1]
+          assert "awesome-python" in out, "search did not return the bootstrapped repository"
+          assert len(out.strip().splitlines()) > 1, "search returned no hits"
+          print("smoke OK")
+          PY
+
+      - name: Status reports the index
+        run: python bin/awesome.py status
+
+      - name: Health check without a source clone fails cleanly
+        run: |
+          python bin/awesome.py search "pdf" --repo does-not-exist && exit 1 || true

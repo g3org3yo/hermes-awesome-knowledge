@@ -25,12 +25,30 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 MANIFEST = ROOT / "manifest" / "repositories.json"
-EXAMPLE_CONFIG = ROOT / "config.example.json"
 ENGINE = ROOT / "bin" / "awesome.py"
 
 
 def now() -> str:
     return datetime.now(timezone.utc).astimezone().isoformat(timespec="seconds")
+
+
+def default_raw_root() -> Path:
+    """Clones belong outside the plugin directory.
+
+    Hermes scans a plugin directory when it validates/installs it; a few hundred MB of
+    third-party markdown inside that tree trips the security scanner and bloats every
+    install. Keep the data in the platform cache directory and override with --raw-root.
+    """
+    override = os.environ.get("AWESOME_KB_RAW_ROOT")
+    if override:
+        return Path(override).expanduser()
+    if os.name == "nt":
+        base = Path(os.environ.get("LOCALAPPDATA") or Path.home() / "AppData" / "Local")
+        return base / "hermes-awesome-knowledge" / "raw"
+    if sys.platform == "darwin":
+        return Path.home() / "Library" / "Caches" / "hermes-awesome-knowledge" / "raw"
+    base = Path(os.environ.get("XDG_CACHE_HOME") or Path.home() / ".cache")
+    return base / "hermes-awesome-knowledge" / "raw"
 
 
 def git(args: list[str], cwd: Path | None = None, timeout: int = 1800) -> tuple[int, str]:
@@ -100,15 +118,36 @@ def provision(repo: dict, raw_root: Path, depth: int, default_branch: str) -> di
     return record
 
 
+def load_manifest() -> dict:
+    """Read the canonical manifest and fail loudly if it is not portable."""
+    manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))
+    repos = manifest.get("repositories") or []
+    if not repos:
+        raise SystemExit(f"error: no repositories in {MANIFEST}")
+    missing = [r.get("id") or "?" for r in repos if not (r.get("dir") or r.get("path"))]
+    if missing:
+        raise SystemExit(f"error: manifest entries without dir/path: {', '.join(missing)}")
+    return manifest
+
+
 def write_config(kb_root: Path, raw_root: Path, depth: int, jobs: int) -> Path:
-    cfg = json.loads(EXAMPLE_CONFIG.read_text(encoding="utf-8"))
+    """Write config.json from the manifest — the manifest is the only source of truth.
+
+    Paths in the manifest are symbolic (`{{RAW_ROOT}}/…`) so the same file works on any
+    machine; this function turns them into the absolute paths the engine expects.
+    """
+    cfg = load_manifest()
     cfg["raw_root"] = raw_root.as_posix()
     cfg["kb_root"] = kb_root.as_posix()
     cfg["clone"] = {"depth": depth, "parallel": jobs}
     for repo in cfg["repositories"]:
-        repo["path"] = (raw_root / Path(repo["path"]).name).as_posix()
+        repo["dir"] = repo.get("dir") or Path(repo["path"]).name
+        repo["path"] = (raw_root / repo["dir"]).as_posix()
+    blob = json.dumps(cfg, ensure_ascii=False, indent=2)
+    if "{{" in blob:
+        raise SystemExit("error: unresolved placeholder in generated config (check the manifest)")
     target = kb_root / "config.json"
-    target.write_text(json.dumps(cfg, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    target.write_text(blob + "\n", encoding="utf-8")
     return target
 
 
@@ -126,7 +165,9 @@ def run_engine(command: str) -> int:
 def main() -> int:
     ap = argparse.ArgumentParser(description="Provision and index the Awesome Knowledge Base.")
     ap.add_argument("--raw-root", default=None,
-                    help="Where upstream clones live (default: <repo>/data/raw)")
+                    help="Where upstream clones live (default: platform cache dir, e.g. "
+                         "LOCALAPPDATA/hermes-awesome-knowledge/raw on Windows; "
+                         "pass <repo>/data/raw for a fully self-contained tree)")
     ap.add_argument("--kb-home", default=str(ROOT),
                     help="Where config.json and index.db live (default: repo root)")
     ap.add_argument("--only", default=None, help="Comma-separated repository ids to provision")
@@ -139,9 +180,15 @@ def main() -> int:
     ap.add_argument("--no-selftest", action="store_true", help="Skip the retrieval self-test")
     args = ap.parse_args()
 
-    manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))
+    manifest = load_manifest()
     kb_root = Path(args.kb_home).resolve()
-    raw_root = Path(args.raw_root).resolve() if args.raw_root else kb_root / "data" / "raw"
+    raw_root = Path(args.raw_root).resolve() if args.raw_root else default_raw_root().resolve()
+    try:
+        raw_root.relative_to(kb_root)
+        print("warn: raw_root is inside the knowledge directory; `hermes plugins validate` scans that "
+              "tree, so third-party markdown will be flagged. Prefer the default location.")
+    except ValueError:
+        pass
     repo_ids = {x.strip() for x in args.only.split(",")} if args.only else None
 
     if not shutil.which("git"):
@@ -168,8 +215,11 @@ def main() -> int:
         "kb_root": kb_root.as_posix(),
         "repositories": records,
     }
-    (ROOT / "manifest" / "sync.json").write_text(
-        json.dumps(sync, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    try:
+        (ROOT / "manifest" / "sync.json").write_text(
+            json.dumps(sync, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    except OSError as exc:  # read-only plugin install: the record is a convenience, not a gate
+        print(f"warn: could not write manifest/sync.json ({exc})")
 
     command = "update" if args.update else "rebuild"
     print(f"index: {command} ...")
