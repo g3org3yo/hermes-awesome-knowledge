@@ -2,6 +2,12 @@
 
 SemVer for the plugin/engine, CalVer for data snapshots (`kb-YYYY.MM.DD` tags).
 
+## 1.1.2 — 2026-11-07
+
+- **Fix:** the adapter test used `__import__("os")` to swap `AWESOME_KB_HOME`, which Hermes's install
+  scanner classified as obfuscation and used to block installation (`Decision: BLOCKED`). Plain
+  `import os` keeps the test identical and the package clean.
+
 ## 1.1.1 — 2026-11-07
 
 Distribution readiness. No change to retrieval behaviour or to the index schema.

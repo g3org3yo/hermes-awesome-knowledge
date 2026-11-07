@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import importlib.util
 import json
+import os
 import shutil
 import sys
 import tempfile
@@ -44,16 +45,16 @@ def load_plugin(kb_home: Path):
     spec = importlib.util.spec_from_file_location(name, ROOT / "__init__.py")
     mod = importlib.util.module_from_spec(spec)
     assert spec.loader is not None
-    old = __import__("os").environ.get("AWESOME_KB_HOME")
-    __import__("os").environ["AWESOME_KB_HOME"] = str(kb_home)
+    previous = os.environ.get("AWESOME_KB_HOME")
+    os.environ["AWESOME_KB_HOME"] = str(kb_home)
     try:
         sys.modules[name] = mod
         spec.loader.exec_module(mod)
     finally:
-        if old is None:
-            __import__("os").environ.pop("AWESOME_KB_HOME", None)
+        if previous is None:
+            os.environ.pop("AWESOME_KB_HOME", None)
         else:
-            __import__("os").environ["AWESOME_KB_HOME"] = old
+            os.environ["AWESOME_KB_HOME"] = previous
     return mod
 
 
